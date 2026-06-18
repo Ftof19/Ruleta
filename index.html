@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Especial Día del Padre - SUNARP</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .background-sunarp {
+            width: 100%;
+            height: 100vh;
+            background-image: url('BGSUNARPP.png'); 
+            background-size: cover;      
+            background-position: center; 
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;         
+            padding-left: 5%;            
+            box-sizing: border-box;
+        }
+
+        .btn-ruleta {
+            background-color: #00875A; 
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-ruleta:hover {
+            background-color: #ff5722; 
+            transform: scale(1.05);    
+        }
+
+        /* ==========================================
+           VENTANA FLOTANTE (MODAL GRANDE)
+           ========================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            text-align: center;
+            position: relative;
+            max-width: 650px; 
+            width: 95%;
+            transform: scale(0.7);
+            transition: transform 0.4s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .btn-cerrar {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 32px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            line-height: 1;
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            color: #222;
+            font-size: 28px; 
+        }
+
+        /* ==========================================
+           MARCADOR DE NOMBRE EN TIEMPO REAL
+           ========================================== */
+        .marcador-nombre {
+            font-size: 24px;
+            font-weight: bold;
+            color: #222;
+            background-color: #f0f2f5;
+            padding: 12px 25px;
+            border-radius: 15px;
+            display: inline-block;
+            margin-top: 15px;
+            min-width: 280px;
+            max-width: 90%;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+            border: 2px solid #ddd;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ganador-destacado {
+            background-color: #00875A !important;
+            color: white !important;
+            border-color: #006644 !important;
+            animation: pulse 0.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        /* ==========================================
+           GEOMETRÍA DE LA RULETA (60 CASILLAS)
+           ========================================== */
+        .wrapper-ruleta {
+            position: relative;
+            width: 480px; 
+            height: 480px;
+            margin: 25px auto 10px auto;
+        }
+
+        .marcador {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 35px solid #ff5722; 
+            z-index: 20;
+        }
+
+        .ruleta-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            border-radius: 50%;
+            border: 10px solid #222;
+            box-sizing: border-box;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .nombre-sector {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center; 
+            align-items: flex-start; 
+            padding-top: 18px; /* Ajustado para que los textos quepan perfecto al borde */      
+            box-sizing: border-box;
+            font-weight: bold;
+            font-size: 8.5px; /* Tamaño de fuente ideal para alta densidad de nombres */
+            transform-origin: center center; 
+        }
+
+        .nombre-sector span {
+            writing-mode: vertical-rl; 
+            transform: rotate(180deg); 
+            white-space: nowrap;
+        }
+
+        .text-white {
+            color: #fff !important;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .text-dark {
+            color: #222 !important;
+            text-shadow: none !important;
+        }
+
+        .btn-girar {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px; 
+            height: 90px;
+            border-radius: 50%;
+            background: #222;
+            color: white;
+            border: 4px solid white;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            user-select: none;
+            z-index: 12;
+        }
+
+        .btn-girar:active {
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-sunarp">
+        <div class="content-left">
+            <div style="margin-top: 180px;"> 
+                <button class="btn-ruleta" onclick="abrirRuleta()">SORTEO</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalRuleta">
+        <div class="modal-content">
+            <button class="btn-cerrar" onclick="cerrarRuleta()">&times;</button>
+            <h3>Gran Sorteo del Día del Padre</h3>
+            
+            <div class="marcador-nombre" id="marcadorNombre">¿Quién ganará?</div>
+            
+            <div class="wrapper-ruleta">
+                <div class="marcador"></div>
+                <div class="ruleta-container" id="ruletaElement"></div>
+                <button class="btn-girar" id="btnGirar" onclick="ejecutarSorteo()">SORTEAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('modalRuleta');
+        const ruleta = document.getElementById('ruletaElement');
+        const btnGirar = document.getElementById('btnGirar');
+        const marcadorNombre = document.getElementById('marcadorNombre');
+
+        // Tus 11 colores exactos guardados
+        const paletaColores = [
+            "rgb(91, 104, 187)", "rgb(167, 70, 185)", "rgb(227, 63, 118)", 
+            "rgb(235, 91, 79)", "rgb(247, 161, 38)", "rgb(247, 191, 70)", 
+            "rgb(247, 231, 86)", "rgb(206, 218, 83)", "rgb(149, 201, 85)", 
+            "rgb(37, 160, 149)", "rgb(62, 160, 237)"
+        ];
+
+        // LISTA CORREGIDA SIN ERRORES DE SINTAXIS
+        const padres = [
+            "ABAD LUNA SAMUEL AUGUSTO",  
+            "ABAD SEMINARIO RODOLFO",    
+            "ALEJOS GUERRERO WILMER KELVIN",    
+            "ALVARADO PINTADO LEONEL EDGARDO",     
+            "ARCE ZEVALLOS IVAN SCOTTY",   
+            "ATOCHE ARISMENDIZ JOSIMAR",    
+            "BALCAZAR VICENTE JOSE ARMANDO",   
+            "BERMEO VELASQUEZ RONALD ALEXANDER",    
+            "CALLE CABALLERO, MILTON CESAR",    
+            "CASTILLO GENNELL JORGE LUIS", 
+            "CULQUICONDOR CARRION JOSE MIGUEL", 
+            "DE LA CRUZ SANTOS JORGE LUIS",  
+            "DIAZ LOPEZ MARIO",    
+            "ELESPURU ROSADO DIEGO ALBERTO",    
+            "FAJARDO ARRIOLA LUIS JAVIER",     
+            "FLORIAN CACERES LUIS ALBERTO",   
+            "FLORIAN CARRILLO RICARDO MARTIN",    
+            "GARAVITO MARTINEZ, MANUEL ERNESTO",   
+            "GONZALES ESPINOZA FRANK DIOMEDES",    
+            "GRADOS SALDARRIAGA JUNIOR ALEJANDRO",    
+            "GUERRERO CANGO JOSE MIGUEL", 
+            "LOPEZ GUERRA SAMUEL MARTIN", 
+            "MALMACEDA SALAZAR EFRAIN",  
+            "MEGO PALMER ALADINO",    
+            "MERINO LOPEZ JOSE EDWARD",    
+            "MOGOLLON CALLE KHRISNAN EMANUEL",     
+            "MOGOLLON SAAVEDRA RODDY GENSONARCE ZEVALLOS IVAN SCOTTY",   
+            "NONAJULCA TICLIAHUANCA SANTOS FRANCISCO",    
+            "NUÑEZ PEZO AUGUSTO GUILLERMO",   
+            "OJEDA YARLEQUE GENARO MIGUEL",    
+            "ORDOÑEZ VIDAL LUIS ALBERTO",    
+            "PACHERREZ ESPINOZA DAVID ALEXIS", 
+            "PALACIOS NOVOA GUSTAVO ANTONIO", 
+            "PINEDO RAMOS WINSGTON ALECZY",  
+            "RAMOS YARLEQUE CARLOS ALBERTO",    
+            "REMICIO MONTERO GUSTAVO ADOLFO",    
+            "RIVERA GARCIA LUIS ARTURO",     
+            "RODRIGUEZ CARAPE YOEL AMED",   
+            "RODRIGUEZ MONTES HENRY EBERTS",    
+            "RUIZ VIERA FRANK JOEL",   
+            "SAAVEDRA CARRILLO HEDILBERTO",    
+            "SALVADOR CHUQUIPOMA CANDELARIO",    
+            "SANDOVAL CARBAJAL JOSE GABRIEL", 
+            "SANDOVAL GUEVARA YEZZLLER NEZZYD", 
+            "SANTA MARIA CABRERA JOSE JAIR",  
+            "SARANGO ELIAS JOSE FELIX",    
+            "SEMINARIO SEMINARIO JOSE ROBERTO",    
+            "SILVA FLORES GONZALO KLEBER",     
+            "SILVA GARCIA MAXIMO DAMIAN",   
+            "SULLON RUIZ JHONATTAN HANS",    
+            "TAVARA AGURTO JUAN FRANCISCO",    
+            "TIMOTEO CALDERON RAUL ENRIQUE",    
+            "TRELLES GARCIA FEDERICO ENRIQUE", 
+            "VALENCIA CARRILLO CARLOS OSWALDO", 
+            "VALLADARES ESPINOZA JARZHINO HERMENEGILDO",  
+            "VASQUEZ CASTILLO GUILLERMO TOMA", 
+            "VEGA VEGAS MANUEL EDUARDO", 
+            "VILCHEZ VICE LEYTHER JONNEL", 
+            "YARLEQUE CORNEJO JULIO MANUEL", 
+            "ZAPATA CHINCHAY LUIS ENRIQUE"
+        ];
+
+        let puedeGirar = true;
+
+        function inicializarRuleta() {
+            ruleta.innerHTML = '';
+            marcadorNombre.innerText = "¿Quién ganará?";
+            marcadorNombre.classList.remove('ganador-destacado');
+            ruleta.style.transform = 'rotate(0deg)';
+            
+            const totalSectores = padres.length;
+            const gradosPorSector = 360 / totalSectores;
+
+            let conicGradientString = "";
+            
+            padres.forEach((nombre, index) => {
+                const inicioDeg = index * gradosPorSector;
+                const finDeg = (index + 1) * gradosPorSector;
+                const colorActual = paletaColores[index % paletaColores.length];
+                
+                conicGradientString += `${colorActual} ${inicioDeg}deg ${finDeg}deg`;
+                if(index < padres.length - 1) conicGradientString += ", ";
+
+                const contenedorSector = document.createElement('div');
+                contenedorSector.className = 'nombre-sector';
+                
+                const rotacionGrados = inicioDeg + (gradosPorSector / 2);
+                contenedorSector.style.transform = `rotate(${rotacionGrados}deg)`;
+                
+                const textoSpan = document.createElement('span');
+                textoSpan.innerText = nombre;
+                
+                const colorId = index % paletaColores.length;
+                if (colorId === 5 || colorId === 6 || colorId === 7) {
+                    contenedorSector.classList.add('text-dark');
+                } else {
+                    contenedorSector.classList.add('text-white');
+                }
+
+                contenedorSector.appendChild(textoSpan);
+                ruleta.appendChild(contenedorSector);
+            });
+
+            ruleta.style.background = `conic-gradient(${conicGradientString})`;
+        }
+
+        function abrirRuleta() {
+            inicializarRuleta();
+            modal.classList.add('active');
+        }
+
+        function cerrarRuleta() {
+            modal.classList.remove('active');
+        }
+
+        function ejecutarSorteo() {
+            if (!puedeGirar || padres.length === 0) return;
+            puedeGirar = false;
+            btnGirar.disabled = true;
+            marcadorNombre.classList.remove('ganador-destacado');
+
+            const totalSectores = padres.length;
+            const gradosPorSector = 360 / totalSectores;
+
+            let anguloActual = 0;
+            const vueltasBase = 6 + Math.floor(Math.random() * 4);
+            const anguloDestinoFijo = Math.floor(Math.random() * 360);
+            const distanciaTotal = (vueltasBase * 360) + anguloDestinoFijo;
+            
+            const duracionTotal = 6000; 
+            const tiempoInicio = performance.now();
+
+            function easeOutCubic(t) {
+                return 1 - Math.pow(1 - t, 3);
+            }
+
+            function actualizarGiro(tiempoActual) {
+                let tiempoTranscurrido = tiempoActual - tiempoInicio;
+                if (tiempoTranscurrido > duracionTotal) tiempoTranscurrido = duracionTotal;
+
+                const progresoNormalizado = tiempoTranscurrido / duracionTotal;
+                const progresoConFrenado = easeOutCubic(progresoNormalizado);
+                
+                anguloActual = progresoConFrenado * distanciaTotal;
+                ruleta.style.transform = `rotate(${anguloActual}deg)`;
+
+                const anguloSimplificado = anguloActual % 360;
+                const indiceApuntado = Math.floor(((360 - anguloSimplificado) % 360) / gradosPorSector);
+                
+                if (padres[indiceApuntado]) {
+                    marcadorNombre.innerText = padres[indiceApuntado];
+                }
+
+                if (tiempoTranscurrido < duracionTotal) {
+                    requestAnimationFrame(actualizarGiro);
+                } else {
+                    const indiceGanador = Math.floor(((360 - (distanciaTotal % 360)) % 360) / gradosPorSector);
+                    marcadorNombre.innerText = `¡GANADOR: ${padres[indiceGanador]}! 🏆`;
+                    marcadorNombre.classList.add('ganador-destacado');
+                    
+                    puedeGirar = true;
+                    btnGirar.disabled = false;
+                }
+            }
+
+            requestAnimationFrame(actualizarGiro);
+        }
+    </script>
+
+</body>
+</html>
