@@ -21,25 +21,25 @@
             background-size: cover;      
             background-position: center; 
             background-repeat: no-repeat;
-            position: relative; /* Permite posicionar el botón libremente dentro del fondo */
+            position: relative; 
             box-sizing: border-box;
         }
 
         /* ==========================================
-           BOTÓN PRINCIPAL UBICADO ABAJO A LA DERECHA
+           BOTÓN PRINCIPAL UBICADO ABAJO A LA IZQUIERDA
            ========================================== */
         .btn-ruleta {
             position: absolute;
-            bottom: 20%;       /* Bajó de 23% a 20% para darle más aire al texto */
-            left: 24%;         /* Se movió de 32% a 28% hacia la izquierda */
+            bottom: 20%;       
+            left: 20%;         
             transform: translateX(-50%); 
             background-color: #00875A; 
             color: white;
             border: none;
             padding: 14px 45px;
-            font-size: 18px;
+            font-size: 24px;
             font-weight: bold;
-            border-radius: 25px;
+            border-radius: 28px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0,0,0,0.25);
             transition: all 0.3s ease;
@@ -54,7 +54,7 @@
         }
 
         /* ==========================================
-           VENTANA FLOTANTE (MODAL GRANDE)
+           VENTANA FLOTANTE (MODAL MÁS GRANDE)
            ========================================== */
         .modal-overlay {
             position: fixed;
@@ -79,13 +79,19 @@
 
         .modal-content {
             background: white;
-            padding: 40px;
+            padding: 30px 40px;
             border-radius: 25px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.4);
             text-align: center;
             position: relative;
-            max-width: 650px; 
+            max-width: 900px; 
             width: 95%;
+            max-height: 95vh;
+            /* ==========================================
+               ¡CANDADO DE SCROLL AQUÍ!
+               Cambiamos 'auto' por 'hidden' para evitar saltos.
+               ========================================== */
+            overflow: hidden; 
             transform: scale(0.7);
             transition: transform 0.4s ease;
         }
@@ -98,7 +104,7 @@
             position: absolute;
             top: 20px;
             right: 25px;
-            font-size: 32px;
+            font-size: 36px;
             background: none;
             border: none;
             cursor: pointer;
@@ -107,24 +113,25 @@
         }
 
         .modal-content h3 {
-            margin-top: 0;
+            margin-top: 10px;
+            margin-bottom: 10px;
             color: #222;
-            font-size: 28px; 
+            font-size: 32px; /* Un poco más grande */
         }
 
         /* ==========================================
            MARCADOR DE NOMBRE EN TIEMPO REAL
            ========================================== */
         .marcador-nombre {
-            font-size: 24px;
+            font-size: 28px; /* Ampliado de 24px a 28px */
             font-weight: bold;
             color: #222;
             background-color: #f0f2f5;
-            padding: 12px 25px;
+            padding: 14px 30px;
             border-radius: 15px;
             display: inline-block;
-            margin-top: 15px;
-            min-width: 280px;
+            margin-top: 5px;
+            min-width: 380px; /* Más ancho para nombres largos */
             max-width: 90%;
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
             border: 2px solid #ddd;
@@ -142,29 +149,29 @@
 
         @keyframes pulse {
             from { transform: scale(1); }
-            to { transform: scale(1.05); }
+            to { transform: scale(1.03); }
         }
 
         /* ==========================================
-           GEOMETRÍA DE LA RULETA (60 CASILLAS)
+           GEOMETRÍA DE LA RULETA AMPLIADA (680px)
            ========================================== */
         .wrapper-ruleta {
             position: relative;
-            width: 480px; 
-            height: 480px;
-            margin: 25px auto 10px auto;
+            width: 680px; /* Ampliado drásticamente de 480px a 680px */
+            height: 680px; /* Ampliado drásticamente de 480px a 680px */
+            margin: 30px auto 10px auto;
         }
 
         .marcador {
             position: absolute;
-            top: -20px;
+            top: -25px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 35px solid #ff5722; 
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-top: 45px solid #ff5722; /* Marcador superior más grande */
             z-index: 20;
         }
 
@@ -173,7 +180,7 @@
             height: 100%;
             position: relative;
             border-radius: 50%;
-            border: 10px solid #222;
+            border: 12px solid #222;
             box-sizing: border-box;
             box-shadow: 0 8px 25px rgba(0,0,0,0.2);
         }
@@ -187,10 +194,10 @@
             display: flex;
             justify-content: center; 
             align-items: flex-start; 
-            padding-top: 18px;      
+            padding-top: 25px; /* Más espacio arriba para el texto debido al tamaño */     
             box-sizing: border-box;
             font-weight: bold;
-            font-size: 8.5px; 
+            font-size: 11.5px; /* Texto más legible de 8.5px a 11.5px */
             transform-origin: center center; 
         }
 
@@ -215,14 +222,14 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 90px; 
-            height: 90px;
+            width: 110px; /* Botón central ampliado de 90px a 110px */
+            height: 110px;
             border-radius: 50%;
             background: #222;
             color: white;
-            border: 4px solid white;
+            border: 5px solid white;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 17px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             user-select: none;
@@ -243,9 +250,9 @@
     <div class="modal-overlay" id="modalRuleta">
         <div class="modal-content">
             <button class="btn-cerrar" onclick="cerrarRuleta()">&times;</button>
-            <h3>Gran Sorteo del Día del Padre</h3>
+            <h3>Sorteo del Día del Padre</h3>
             
-            <div class="marcador-nombre" id="marcadorNombre">¿Quién ganará?</div>
+            <div class="marcador-nombre" id="marcadorNombre">RULETA</div>
             
             <div class="wrapper-ruleta">
                 <div class="marcador"></div>
@@ -335,7 +342,7 @@
 
         function inicializarRuleta() {
             ruleta.innerHTML = '';
-            marcadorNombre.innerText = "¿Quién ganará?";
+            marcadorNombre.innerText = "RULETA";
             marcadorNombre.classList.remove('ganador-destacado');
             ruleta.style.transform = 'rotate(0deg)';
             
