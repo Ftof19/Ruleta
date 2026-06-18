@@ -17,34 +17,40 @@
         .background-sunarp {
             width: 100%;
             height: 100vh;
-            background-image: url('BGSUNARPP.png'); 
+            background-image: url('BGSUNARP.png'); 
             background-size: cover;      
             background-position: center; 
             background-repeat: no-repeat;
-            display: flex;
-            align-items: center;         
-            padding-left: 5%;            
+            position: relative; /* Permite posicionar el botón libremente dentro del fondo */
             box-sizing: border-box;
         }
 
+        /* ==========================================
+           BOTÓN PRINCIPAL UBICADO ABAJO A LA DERECHA
+           ========================================== */
         .btn-ruleta {
+            position: absolute;
+            bottom: 20%;       /* Bajó de 23% a 20% para darle más aire al texto */
+            left: 24%;         /* Se movió de 32% a 28% hacia la izquierda */
+            transform: translateX(-50%); 
             background-color: #00875A; 
             color: white;
             border: none;
-            padding: 15px 40px;
+            padding: 14px 45px;
             font-size: 18px;
             font-weight: bold;
             border-radius: 25px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+            z-index: 10;
         }
 
         .btn-ruleta:hover {
             background-color: #ff5722; 
-            transform: scale(1.05);    
+            transform: translateX(-50%) scale(1.05); 
         }
 
         /* ==========================================
@@ -181,10 +187,10 @@
             display: flex;
             justify-content: center; 
             align-items: flex-start; 
-            padding-top: 18px; /* Ajustado para que los textos quepan perfecto al borde */      
+            padding-top: 18px;      
             box-sizing: border-box;
             font-weight: bold;
-            font-size: 8.5px; /* Tamaño de fuente ideal para alta densidad de nombres */
+            font-size: 8.5px; 
             transform-origin: center center; 
         }
 
@@ -231,11 +237,7 @@
 <body>
 
     <div class="background-sunarp">
-        <div class="content-left">
-            <div style="margin-top: 180px;"> 
-                <button class="btn-ruleta" onclick="abrirRuleta()">SORTEO</button>
-            </div>
-        </div>
+        <button class="btn-ruleta" onclick="abrirRuleta()">SORTEO</button>
     </div>
 
     <div class="modal-overlay" id="modalRuleta">
@@ -259,7 +261,6 @@
         const btnGirar = document.getElementById('btnGirar');
         const marcadorNombre = document.getElementById('marcadorNombre');
 
-        // Tus 11 colores exactos guardados
         const paletaColores = [
             "rgb(91, 104, 187)", "rgb(167, 70, 185)", "rgb(227, 63, 118)", 
             "rgb(235, 91, 79)", "rgb(247, 161, 38)", "rgb(247, 191, 70)", 
@@ -267,7 +268,6 @@
             "rgb(37, 160, 149)", "rgb(62, 160, 237)"
         ];
 
-        // LISTA CORREGIDA SIN ERRORES DE SINTAXIS
         const padres = [
             "ABAD LUNA SAMUEL AUGUSTO",  
             "ABAD SEMINARIO RODOLFO",    
@@ -295,7 +295,7 @@
             "MEGO PALMER ALADINO",    
             "MERINO LOPEZ JOSE EDWARD",    
             "MOGOLLON CALLE KHRISNAN EMANUEL",     
-            "MOGOLLON SAAVEDRA RODDY GENSONARCE ZEVALLOS IVAN SCOTTY",   
+            "MOGOLLON SAAVEDRA RODDY GENSON",   
             "NONAJULCA TICLIAHUANCA SANTOS FRANCISCO",    
             "NUÑEZ PEZO AUGUSTO GUILLERMO",   
             "OJEDA YARLEQUE GENARO MIGUEL",    
