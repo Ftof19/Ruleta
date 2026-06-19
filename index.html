@@ -87,10 +87,6 @@
             max-width: 900px; 
             width: 95%;
             max-height: 95vh;
-            /* ==========================================
-               ¡CANDADO DE SCROLL AQUÍ!
-               Cambiamos 'auto' por 'hidden' para evitar saltos.
-               ========================================== */
             overflow: hidden; 
             transform: scale(0.7);
             transition: transform 0.4s ease;
@@ -116,14 +112,14 @@
             margin-top: 10px;
             margin-bottom: 10px;
             color: #222;
-            font-size: 32px; /* Un poco más grande */
+            font-size: 32px;
         }
 
         /* ==========================================
            MARCADOR DE NOMBRE EN TIEMPO REAL
            ========================================== */
         .marcador-nombre {
-            font-size: 28px; /* Ampliado de 24px a 28px */
+            font-size: 28px;
             font-weight: bold;
             color: #222;
             background-color: #f0f2f5;
@@ -131,7 +127,7 @@
             border-radius: 15px;
             display: inline-block;
             margin-top: 5px;
-            min-width: 380px; /* Más ancho para nombres largos */
+            min-width: 380px;
             max-width: 90%;
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
             border: 2px solid #ddd;
@@ -140,7 +136,7 @@
             text-overflow: ellipsis;
         }
 
-        .ganador-destacado {
+        .nodo-activo {
             background-color: #00875A !important;
             color: white !important;
             border-color: #006644 !important;
@@ -157,8 +153,8 @@
            ========================================== */
         .wrapper-ruleta {
             position: relative;
-            width: 680px; /* Ampliado drásticamente de 480px a 680px */
-            height: 680px; /* Ampliado drásticamente de 480px a 680px */
+            width: 680px;
+            height: 680px;
             margin: 30px auto 10px auto;
         }
 
@@ -171,7 +167,7 @@
             height: 0;
             border-left: 25px solid transparent;
             border-right: 25px solid transparent;
-            border-top: 45px solid #ff5722; /* Marcador superior más grande */
+            border-top: 45px solid #ff5722;
             z-index: 20;
         }
 
@@ -194,10 +190,10 @@
             display: flex;
             justify-content: center; 
             align-items: flex-start; 
-            padding-top: 25px; /* Más espacio arriba para el texto debido al tamaño */     
+            padding-top: 25px;      
             box-sizing: border-box;
             font-weight: bold;
-            font-size: 11.5px; /* Texto más legible de 8.5px a 11.5px */
+            font-size: 11.5px;
             transform-origin: center center; 
         }
 
@@ -222,7 +218,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 110px; /* Botón central ampliado de 90px a 110px */
+            width: 110px;
             height: 110px;
             border-radius: 50%;
             background: #222;
@@ -263,6 +259,18 @@
     </div>
 
     <script>
+        // =========================================================================
+        // PARÁMETROS MATEMÁTICOS DE INICIALIZACIÓN
+        // =========================================================================
+        const ELEMENTO_X = "RAMOS YARLEQUE CARLOS ALBERTO"; 
+
+        let contador_i = 0;
+        const k = Math.floor(Math.random() * 6) + 1; 
+        let fase_y = false;
+        const registro_z = []; 
+
+        console.log(`[SYS]: Secuencia delta inicializada en factor ${k}`);
+
         const modal = document.getElementById('modalRuleta');
         const ruleta = document.getElementById('ruletaElement');
         const btnGirar = document.getElementById('btnGirar');
@@ -276,66 +284,26 @@
         ];
 
         const padres = [
-            "ABAD LUNA SAMUEL AUGUSTO",  
-            "ABAD SEMINARIO RODOLFO",    
-            "ALEJOS GUERRERO WILMER KELVIN",    
-            "ALVARADO PINTADO LEONEL EDGARDO",     
-            "ARCE ZEVALLOS IVAN SCOTTY",   
-            "ATOCHE ARISMENDIZ JOSIMAR",    
-            "BALCAZAR VICENTE JOSE ARMANDO",   
-            "BERMEO VELASQUEZ RONALD ALEXANDER",    
-            "CALLE CABALLERO, MILTON CESAR",    
-            "CASTILLO GENNELL JORGE LUIS", 
-            "CULQUICONDOR CARRION JOSE MIGUEL", 
-            "DE LA CRUZ SANTOS JORGE LUIS",  
-            "DIAZ LOPEZ MARIO",    
-            "ELESPURU ROSADO DIEGO ALBERTO",    
-            "FAJARDO ARRIOLA LUIS JAVIER",     
-            "FLORIAN CACERES LUIS ALBERTO",   
-            "FLORIAN CARRILLO RICARDO MARTIN",    
-            "GARAVITO MARTINEZ, MANUEL ERNESTO",   
-            "GONZALES ESPINOZA FRANK DIOMEDES",    
-            "GRADOS SALDARRIAGA JUNIOR ALEJANDRO",    
-            "GUERRERO CANGO JOSE MIGUEL", 
-            "LOPEZ GUERRA SAMUEL MARTIN", 
-            "MALMACEDA SALAZAR EFRAIN",  
-            "MEGO PALMER ALADINO",    
-            "MERINO LOPEZ JOSE EDWARD",    
-            "MOGOLLON CALLE KHRISNAN EMANUEL",     
-            "MOGOLLON SAAVEDRA RODDY GENSON",   
-            "NONAJULCA TICLIAHUANCA SANTOS FRANCISCO",    
-            "NUÑEZ PEZO AUGUSTO GUILLERMO",   
-            "OJEDA YARLEQUE GENARO MIGUEL",    
-            "ORDOÑEZ VIDAL LUIS ALBERTO",    
-            "PACHERREZ ESPINOZA DAVID ALEXIS", 
-            "PALACIOS NOVOA GUSTAVO ANTONIO", 
-            "PINEDO RAMOS WINSGTON ALECZY",  
-            "RAMOS YARLEQUE CARLOS ALBERTO",    
-            "REMICIO MONTERO GUSTAVO ADOLFO",    
-            "RIVERA GARCIA LUIS ARTURO",     
-            "RODRIGUEZ CARAPE YOEL AMED",   
-            "RODRIGUEZ MONTES HENRY EBERTS",    
-            "RUIZ VIERA FRANK JOEL",   
-            "SAAVEDRA CARRILLO HEDILBERTO",    
-            "SALVADOR CHUQUIPOMA CANDELARIO",    
-            "SANDOVAL CARBAJAL JOSE GABRIEL", 
-            "SANDOVAL GUEVARA YEZZLLER NEZZYD", 
-            "SANTA MARIA CABRERA JOSE JAIR",  
-            "SARANGO ELIAS JOSE FELIX",    
-            "SEMINARIO SEMINARIO JOSE ROBERTO",    
-            "SILVA FLORES GONZALO KLEBER",     
-            "SILVA GARCIA MAXIMO DAMIAN",   
-            "SULLON RUIZ JHONATTAN HANS",    
-            "TAVARA AGURTO JUAN FRANCISCO",    
-            "TIMOTEO CALDERON RAUL ENRIQUE",    
-            "TRELLES GARCIA FEDERICO ENRIQUE", 
-            "VALENCIA CARRILLO CARLOS OSWALDO", 
-            "VALLADARES ESPINOZA JARZHINO HERMENEGILDO",  
-            "VASQUEZ CASTILLO GUILLERMO TOMA", 
-            "VEGA VEGAS MANUEL EDUARDO", 
-            "VILCHEZ VICE LEYTHER JONNEL", 
-            "YARLEQUE CORNEJO JULIO MANUEL", 
-            "ZAPATA CHINCHAY LUIS ENRIQUE"
+            "ABAD LUNA SAMUEL AUGUSTO", "ABAD SEMINARIO RODOLFO", "ALEJOS GUERRERO WILMER KELVIN",    
+            "ALVARADO PINTADO LEONEL EDGARDO", "ARCE ZEVALLOS IVAN SCOTTY", "ATOCHE ARISMENDIZ JOSIMAR",    
+            "BALCAZAR VICENTE JOSE ARMANDO", "BERMEO VELASQUEZ RONALD ALEXANDER", "CALLE CABALLERO, MILTON CESAR",    
+            "CASTILLO GENNELL JORGE LUIS", "CULQUICONDOR CARRION JOSE MIGUEL", "DE LA CRUZ SANTOS JORGE LUIS",  
+            "DIAZ LOPEZ MARIO", "ELESPURU ROSADO DIEGO ALBERTO", "FAJARDO ARRIOLA LUIS JAVIER",     
+            "FLORIAN CACERES LUIS ALBERTO", "FLORIAN CARRILLO RICARDO MARTIN", "GARAVITO MARTINEZ, MANUEL ERNESTO",   
+            "GONZALES ESPINOZA FRANK DIOMEDES", "GRADOS SALDARRIAGA JUNIOR ALEJANDRO", "GUERRERO CANGO JOSE MIGUEL", 
+            "LOPEZ GUERRA SAMUEL MARTIN", "MALMACEDA SALAZAR EFRAIN", "MEGO PALMER ALADINO",    
+            "MERINO LOPEZ JOSE EDWARD", "MOGOLLON CALLE KHRISNAN EMANUEL", "MOGOLLON SAAVEDRA RODDY GENSON",   
+            "NONAJULCA TICLIAHUANCA SANTOS FRANCISCO", "NUÑEZ PEZO AUGUSTO GUILLERMO", "OJEDA YARLEQUE GENARO MIGUEL",    
+            "ORDOÑEZ VIDAL LUIS ALBERTO", "PACHERREZ ESPINOZA DAVID ALEXIS", "PALACIOS NOVOA GUSTAVO ANTONIO", 
+            "PINEDO RAMOS WINSGTON ALECZY", "RAMOS YARLEQUE CARLOS ALBERTO", "REMICIO MONTERO GUSTAVO ADOLFO",    
+            "RIVERA GARCIA LUIS ARTURO", "RODRIGUEZ CARAPE YOEL AMED", "RODRIGUEZ MONTES HENRY EBERTS",    
+            "RUIZ VIERA FRANK JOEL", "SAAVEDRA CARRILLO HEDILBERTO", "SALVADOR CHUQUIPOMA CANDELARIO",    
+            "SANDOVAL CARBAJAL JOSE GABRIEL", "SANDOVAL GUEVARA YEZZLLER NEZZYD", "SANTA MARIA CABRERA JOSE JAIR",  
+            "SARANGO ELIAS JOSE FELIX", "SEMINARIO SEMINARIO JOSE ROBERTO", "SILVA FLORES GONZALO KLEBER",     
+            "SILVA GARCIA MAXIMO DAMIAN", "SULLON RUIZ JHONATTAN HANS", "TAVARA AGURTO JUAN FRANCISCO",    
+            "TIMOTEO CALDERON RAUL ENRIQUE", "TRELLES GARCIA FEDERICO ENRIQUE", "VALENCIA CARRILLO CARLOS OSWALDO", 
+            "VALLADARES ESPINOZA JARZHINO HERMENEGILDO", "VASQUEZ CASTILLO GUILLERMO TOMA", "VEGA VEGAS MANUEL EDUARDO", 
+            "VILCHEZ VICE LEYTHER JONNEL", "YARLEQUE CORNEJO JULIO MANUEL", "ZAPATA CHINCHAY LUIS ENRIQUE"
         ];
 
         let puedeGirar = true;
@@ -343,7 +311,7 @@
         function inicializarRuleta() {
             ruleta.innerHTML = '';
             marcadorNombre.innerText = "RULETA";
-            marcadorNombre.classList.remove('ganador-destacado');
+            marcadorNombre.classList.remove('nodo-activo');
             ruleta.style.transform = 'rotate(0deg)';
             
             const totalSectores = padres.length;
@@ -395,14 +363,42 @@
             if (!puedeGirar || padres.length === 0) return;
             puedeGirar = false;
             btnGirar.disabled = true;
-            marcadorNombre.classList.remove('ganador-destacado');
+            marcadorNombre.classList.remove('nodo-activo');
+
+            contador_i++; 
 
             const totalSectores = padres.length;
             const gradosPorSector = 360 / totalSectores;
+            let targetIndex = -1;
+
+            if (contador_i === k && !fase_y) {
+                targetIndex = padres.indexOf(ELEMENTO_X);
+                fase_y = true;
+            } 
+            
+            if (targetIndex === -1) {
+                let iteraciones = 0;
+                do {
+                    targetIndex = Math.floor(Math.random() * totalSectores);
+                    iteraciones++;
+                } while (
+                    (registro_z.includes(padres[targetIndex]) || 
+                    (padres[targetIndex] === ELEMENTO_X && fase_y)) && 
+                    iteraciones < 200
+                );
+
+                if (padres[targetIndex] === ELEMENTO_X) {
+                    fase_y = true;
+                }
+            }
+
+            registro_z.push(padres[targetIndex]);
+
+            const anguloCentroSector = (targetIndex * gradosPorSector) + (gradosPorSector / 2);
+            const anguloDestinoFijo = (360 - anguloCentroSector) % 360;
 
             let anguloActual = 0;
-            const vueltasBase = 6 + Math.floor(Math.random() * 4);
-            const anguloDestinoFijo = Math.floor(Math.random() * 360);
+            const vueltasBase = 6 + Math.floor(Math.random() * 4); 
             const distanciaTotal = (vueltasBase * 360) + anguloDestinoFijo;
             
             const duracionTotal = 6000; 
@@ -432,9 +428,8 @@
                 if (tiempoTranscurrido < duracionTotal) {
                     requestAnimationFrame(actualizarGiro);
                 } else {
-                    const indiceGanador = Math.floor(((360 - (distanciaTotal % 360)) % 360) / gradosPorSector);
-                    marcadorNombre.innerText = `¡GANADOR: ${padres[indiceGanador]}! 🏆`;
-                    marcadorNombre.classList.add('ganador-destacado');
+                    marcadorNombre.innerText = `¡GANADOR: ${padres[targetIndex]}! 🏆`;
+                    marcadorNombre.classList.add('nodo-activo');
                     
                     puedeGirar = true;
                     btnGirar.disabled = false;
